@@ -1,0 +1,15 @@
+{
+  "name": "crankshaft",
+  "version": "1.0.0",
+  "dependencies": {
+    "clangformatjs": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "format": "clangformatjs src/**/*{.c,.h} include/crankshaft.h",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
