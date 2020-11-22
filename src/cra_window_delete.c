@@ -36,7 +36,7 @@ cra_window_delete (cra_window_t window, cra_window_cb callback,
         dd_t dd;
         ICRA_MALLOC (dd);
         icra_closure_init (&dd->closure, callback, callback_user_data,
-                           icra_closure_finalizer);
+                           icra_closure_deleter_finalizer);
         dd->window = window;
 
         ICRA_DISPATCH (window->engine, dispatch_window_delete, dd);

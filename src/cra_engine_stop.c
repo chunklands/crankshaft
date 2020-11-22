@@ -34,7 +34,7 @@ cra_engine_stop (cra_engine_t engine, cra_engine_cb callback,
         dd_t dd;
         ICRA_MALLOC (dd);
         icra_closure_init (&dd->closure, callback, callback_user_data,
-                           icra_closure_finalizer);
+                           icra_closure_deleter_finalizer);
         dd->engine = engine;
 
         ICRA_DISPATCH (engine, dispatch_engine_stop, dd);

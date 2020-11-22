@@ -142,13 +142,16 @@ extern "C"
         typedef void (*cra_error_handler) (int status, void *data);
         typedef void (*cra_callback) (void *result, cra_status status,
                                       void *user_data);
+        struct cra_callback_closure_s;
+        typedef void (*cra_closure_finalizer) (
+            struct cra_callback_closure_s *closure);
         typedef struct cra_callback_closure_s
         {
                 cra_callback callback;
                 void *callback_result;
                 cra_status callback_status;
                 void *callback_user_data;
-                void (*finalizer) (void *closure);
+                cra_closure_finalizer finalizer;
         } * cra_callback_closure_t;
         typedef CraCallbackHandlerResult (*cra_callback_handler) (
             cra_callback_closure_t closure, void *data);
@@ -171,7 +174,6 @@ extern "C"
         // api
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);
         CRA_EXTERN int cra_destroy ();
-        CRA_EXTERN int cra_poll_events (cra_engine_t engine);
 
         CRA_EXTERN int cra_engine_new (cra_engine_t *engine,
                                        cra_callback_handler callback_handler,

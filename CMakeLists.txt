@@ -17,7 +17,6 @@ add_library(
     src/cra_engine_new.c
     src/cra_engine_stop.c
     src/cra_init.c
-    src/cra_poll_events.c
     src/cra_window_delete.c
     src/cra_window_get_engine.c
     src/cra_window_load_gl.c

@@ -58,7 +58,7 @@ cra_window_new (cra_engine_t engine, const cra_window_new_params_t params,
         dd_t dd;
         ICRA_MALLOC (dd);
         icra_closure_init (&dd->closure, callback, callback_user_data,
-                           icra_closure_finalizer);
+                           icra_closure_deleter_finalizer);
         dd->window = window;
 
         ICRA_DISPATCH (engine, dispatch_window_new, dd);
