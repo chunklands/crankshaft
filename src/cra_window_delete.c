@@ -21,13 +21,19 @@ dispatch_window_delete (dd_t dd)
             = g_hash_table_remove (engine->window_instances, window);
         ICRA_ASSERT (removed);
 
-        return icra_dispatch_make_callback (engine, &dd->closure, CRA_OK,
-                                            window);
+        GLFWwindow *glfw_window = window->glfw_window;
+        ICRA_FREE (window);
+
+        icra_dispatch_make_pre_callback (engine, &dd->closure, cra_ok, NULL,
+                                         (cra_callback)glfwDestroyWindow,
+                                         glfw_window);
+
+        return G_SOURCE_REMOVE;
 }
 
 int
-cra_window_delete (cra_window_t window, cra_window_cb callback,
-                   void *callback_user_data)
+cra_window_delete (cra_window_t window, cra_userland_void_callback callback,
+                   void *callback_data)
 {
         ICRA_CHECK_PARAM_NOTNULL (window);
 
@@ -35,10 +41,10 @@ cra_window_delete (cra_window_t window, cra_window_cb callback,
 
         dd_t dd;
         ICRA_MALLOC (dd);
-        icra_closure_init (&dd->closure, callback, callback_user_data,
+        icra_closure_init (&dd->closure, callback, callback_data,
                            icra_closure_deleter_finalizer);
         dd->window = window;
 
         ICRA_DISPATCH (window->engine, dispatch_window_delete, dd);
-        return CRA_OK;
+        return cra_ok;
 }

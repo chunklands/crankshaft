@@ -9,5 +9,5 @@ cra_window_get_engine (cra_window_t window, cra_engine_t *engine)
         ICRA_ASSERT (window->engine != NULL);
 
         *engine = window->engine;
-        return CRA_OK;
+        return cra_ok;
 }

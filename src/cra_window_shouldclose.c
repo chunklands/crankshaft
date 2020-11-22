@@ -12,5 +12,5 @@ cra_window_shouldclose (cra_window_t window, int *result)
         else
                 *result = false;
 
-        return CRA_OK;
+        return cra_ok;
 }

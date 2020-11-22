@@ -3,7 +3,7 @@
 
 int main() {
   // cra_init([](int status, void* data) {
-  //   assert(status == CRA_OK);
+  //   assert(status == cra_ok);
   // }, nullptr);
 
   // cra_engine_t engine;

@@ -24,7 +24,7 @@ void
 poll_events (void *result, cra_status status, void *user_data)
 {
         ICRA_ASSERT (result == NULL);
-        ICRA_ASSERT (status == CRA_OK);
+        ICRA_ASSERT (status == cra_ok);
         ICRA_ASSERT (user_data == NULL);
 
         glfwPollEvents ();
@@ -40,6 +40,8 @@ engine_thread_func (cra_engine_t engine)
         last_update = last_render = last_poll = glfwGetTime ();
 
         struct cra_callback_closure_s poll_events_closure;
+        ICRA_MEMSET0 (&poll_events_closure);
+
         icra_closure_init (&poll_events_closure, poll_events, NULL,
                            icra_closure_noop_finalizer);
 
@@ -59,7 +61,7 @@ engine_thread_func (cra_engine_t engine)
                 {
                         last_poll = loop_start;
                         icra_dispatch_make_callback (
-                            engine, &poll_events_closure, CRA_OK, NULL);
+                            engine, &poll_events_closure, cra_ok, NULL);
                 }
 
                 const double swap_time = loop_start + refresh_interval * 0.75;
@@ -102,5 +104,5 @@ cra_engine_new (cra_engine_t *engine_ptr,
             "GL Thread", (GThreadFunc)engine_thread_func, engine);
 
         *engine_ptr = engine;
-        return CRA_OK;
+        return cra_ok;
 }

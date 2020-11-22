@@ -42,16 +42,16 @@
         G_STMT_END
 
 #define ICRA_UNCHECKED(expr) (void)(expr)
-#define ICRA_CHECK_PARAM(expr) ICRA_CHECK ((expr), CRA_ERR_PARAM)
-#define ICRA_CHECK_PARAM_NULL(expr) ICRA_CHECK ((expr) == NULL, CRA_ERR_PARAM)
+#define ICRA_CHECK_PARAM(expr) ICRA_CHECK ((expr), cra_err_param)
+#define ICRA_CHECK_PARAM_NULL(expr) ICRA_CHECK ((expr) == NULL, cra_err_param)
 #define ICRA_CHECK_PARAM_NOTNULL(expr)                                        \
-        ICRA_CHECK ((expr) != NULL, CRA_ERR_PARAM)
+        ICRA_CHECK ((expr) != NULL, cra_err_param)
 
 #define ICRA_CHECK_THREAD_MAIN(engine)                                        \
-        ICRA_CHECK (icra_is_main_thread (engine), CRA_ERR_THREAD)
+        ICRA_CHECK (icra_is_main_thread (engine), cra_err_thread)
 
-#define ICRA_CHECK_LOGIC(expr) ICRA_CHECK ((expr), CRA_ERR_LOGIC)
-#define ICRA_CHECK_LIB(expr) ICRA_CHECK ((expr), CRA_ERR_LIB)
+#define ICRA_CHECK_LOGIC(expr) ICRA_CHECK ((expr), cra_err_logic)
+#define ICRA_CHECK_LIB(expr) ICRA_CHECK ((expr), cra_err_lib)
 
 #define ICRA_DISPATCH_DATA_CLOSURE_FIELD struct cra_callback_closure_s closure;
 #define ICRA_DISPATCH_DATA_AS_CLOSURE(dispatch_data)                          \
@@ -65,36 +65,32 @@
                                        (data));                               \
         } while (0)
 
-gboolean icra_dispatch_make_callback (cra_engine_t engine,
-                                      cra_callback_closure_t closure,
-                                      cra_status status, void *result);
+void icra_dispatch_make_callback (cra_engine_t engine,
+                                  cra_callback_closure_t closure,
+                                  cra_status userland_callback_status,
+                                  void *userland_callback_result);
 
-#define ICRA_DISPATCH_MAKE_CALLBACK(engine, data, status, result)             \
-        do                                                                    \
-        {                                                                     \
-                (data)->closure.callback_status = (status);                   \
-                (data)->closure.callback_result = (result);                   \
-                CraCallbackHandlerResult handler_result                       \
-                    = (engine)->callback_handler (                            \
-                        ICRA_DISPATCH_DATA_AS_CLOSURE ((data)),               \
-                        (engine)->callback_handler_data);                     \
-                if (handler_result == CRA_FREE_DATA)                          \
-                        g_free ((data));                                      \
-        } while (0)
+void icra_dispatch_make_pre_callback (cra_engine_t engine,
+                                      cra_callback_closure_t closure,
+                                      cra_status userland_callback_status,
+                                      void *userland_callback_result,
+                                      cra_callback pre_userland_callback,
+                                      void *pre_userland_callback_data);
 
 #define ICRA_MALLOC(var)                                                      \
-        do                                                                    \
-        {                                                                     \
-                var = g_malloc0 (sizeof (*var));                              \
-        } while (0)
+        G_STMT_START { var = g_malloc0 (sizeof (*(var))); }                     \
+        G_STMT_END
 #define ICRA_FREE(var)                                                        \
-        do                                                                    \
-        {                                                                     \
-                g_free ((var));                                               \
-        } while (0)
+        G_STMT_START { g_free ((var)); }                                      \
+        G_STMT_END
+
+#define ICRA_MEMSET0(var)                                                     \
+        G_STMT_START { memset ((var), 0, sizeof (*(var))); }                  \
+        G_STMT_END
 
 bool icra_is_main_thread (cra_engine_t engine);
 bool icra_is_opengl_thread (cra_engine_t engine);
+bool icra_is_status (cra_status status);
 
 struct icra_crankshaft_s
 {
@@ -138,7 +134,7 @@ void icra_closure_deleter_finalizer (cra_callback_closure_t closure);
 void icra_closure_noop_finalizer (cra_callback_closure_t closure);
 
 void icra_closure_init (cra_callback_closure_t closure, void (*callback) (),
-                        void *callback_user_data,
+                        void *userland_callback_userland_data,
                         cra_closure_finalizer finalizer);
 
 #endif // __CRANKSHAFT_INTERNAL_H__

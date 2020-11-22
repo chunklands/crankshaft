@@ -8,5 +8,5 @@ cra_destroy ()
         ICRA_FREE (icra_crankshaft);
         icra_crankshaft = NULL;
 
-        return CRA_OK;
+        return cra_ok;
 }

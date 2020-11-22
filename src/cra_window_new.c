@@ -21,18 +21,18 @@ dispatch_window_new (dd_t dd)
             = g_hash_table_add (engine->window_instances, window);
         ICRA_ASSERT (inserted);
 
-        return icra_dispatch_make_callback (engine, &dd->closure, CRA_OK,
-                                            window);
+        icra_dispatch_make_callback (engine, &dd->closure, cra_ok, window);
+        return G_SOURCE_REMOVE;
 }
 
 int
 cra_window_new (cra_engine_t engine, const cra_window_new_params_t params,
-                cra_window_cb callback, void *callback_user_data)
+                cra_userland_window_callback callback, void *callback_data)
 {
         ICRA_CHECK_PARAM_NOTNULL (engine);
         ICRA_CHECK_PARAM_NOTNULL (params);
         ICRA_UNCHECKED (callback);
-        ICRA_UNCHECKED (callback_user_data);
+        ICRA_UNCHECKED (callback_data);
 
         ICRA_CHECK_THREAD_MAIN (engine);
 
@@ -56,11 +56,12 @@ cra_window_new (cra_engine_t engine, const cra_window_new_params_t params,
         window->glfw_window = glfw_window;
 
         dd_t dd;
+
         ICRA_MALLOC (dd);
-        icra_closure_init (&dd->closure, callback, callback_user_data,
+        icra_closure_init (&dd->closure, callback, callback_data,
                            icra_closure_deleter_finalizer);
         dd->window = window;
 
         ICRA_DISPATCH (engine, dispatch_window_new, dd);
-        return CRA_OK;
+        return cra_ok;
 }

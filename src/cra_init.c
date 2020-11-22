@@ -22,5 +22,5 @@ cra_init (cra_error_handler error_handler, void *data)
 
         icra_crankshaft->glfw_refresh_rate = vidmode->refreshRate;
 
-        return CRA_OK;
+        return cra_ok;
 }

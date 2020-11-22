@@ -11,5 +11,5 @@ cra_engine_delete (cra_engine_t engine)
         g_main_context_unref (engine->context);
 
         ICRA_FREE (engine);
-        return CRA_OK;
+        return cra_ok;
 }

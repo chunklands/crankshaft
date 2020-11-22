@@ -13,17 +13,19 @@ dispatch_engine_init (dd_t dd)
         ICRA_ASSERT (dd->engine != NULL);
         ICRA_ASSERT_THREAD_OPENGL (dd->engine);
 
-        return icra_dispatch_make_callback (dd->engine, &dd->closure, CRA_OK,
-                                            dd->engine);
+        icra_dispatch_make_callback (dd->engine, &dd->closure, cra_ok,
+                                     dd->engine);
+
+        return G_SOURCE_REMOVE;
 }
 
 int
-cra_engine_init (cra_engine_t engine, cra_engine_cb callback,
-                 void *callback_user_data)
+cra_engine_init (cra_engine_t engine, cra_userland_engine_callback callback,
+                 void *callback_data)
 {
         ICRA_CHECK_PARAM_NOTNULL (engine);
         ICRA_UNCHECKED (callback);
-        ICRA_UNCHECKED (callback_user_data);
+        ICRA_UNCHECKED (callback_data);
 
         ICRA_CHECK_LOGIC (!engine->initialized);
         engine->initialized = true;
@@ -38,10 +40,10 @@ cra_engine_init (cra_engine_t engine, cra_engine_cb callback,
         dd_t dd;
         ICRA_MALLOC (dd);
 
-        icra_closure_init (&dd->closure, callback, callback_user_data,
+        icra_closure_init (&dd->closure, callback, callback_data,
                            icra_closure_deleter_finalizer);
         dd->engine = engine;
 
         ICRA_DISPATCH (engine, dispatch_engine_init, dd);
-        return CRA_OK;
+        return cra_ok;
 }
