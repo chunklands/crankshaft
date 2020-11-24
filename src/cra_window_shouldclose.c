@@ -1,4 +1,6 @@
-#include "crankshaft_internal.h"
+#include "glfw.h"
+#include "icra_checks.h"
+#include "icra_window.h"
 
 int
 cra_window_shouldclose (cra_window_t window, int *result)

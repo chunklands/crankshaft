@@ -1,4 +1,7 @@
-#include "crankshaft_internal.h"
+#include "icra_checks.h"
+#include "icra_engine.h"
+#include "icra_mem.h"
+#include <glib/glib.h>
 
 int
 cra_engine_delete (cra_engine_t engine)

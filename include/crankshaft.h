@@ -133,44 +133,33 @@ extern "C"
         //     int yoffset;
         // };
 
+        typedef struct icra_ulc_closure_s *cra_ulc_closure_t;
+        typedef struct icra_ulh_closure_s *cra_ulh_closure_t;
+
+        typedef void (*cra_error_handler) (int status, void *data);
+        typedef void (*cra_callback) (void *data);
+
         typedef enum
         {
                 cra_finalize_data,
                 cra_keep_data
-        } cra_callback_handler_result;
+        } cra_ulc_invocation_result;
 
-        typedef void (*cra_error_handler) (int status, void *data);
-        typedef void (*cra_callback) (void *data);
-        typedef void (*cra_userland_callback) (void *result, cra_status status,
-                                               void *user_data);
-        struct cra_callback_closure_s;
-        typedef void (*cra_closure_finalizer) (
-            struct cra_callback_closure_s *closure);
+        typedef cra_ulc_invocation_result (*cra_ulc_invoker) (
+            cra_ulc_closure_t closure, void *data);
 
-        typedef struct cra_callback_closure_s
-        {
-                cra_callback pre_userland_callback;
-                void *pre_userland_callback_data;
+        // callback function types
 
-                cra_userland_callback userland_callback;
-                void *userland_callback_result;
-                cra_status userland_callback_status;
-                void *userland_callback_userland_data;
+        typedef void (*cra_ulc_void) (void *void_result, cra_status status,
+                                      void *data);
+        typedef void (*cra_ulc_engine) (cra_engine_t engine, cra_status status,
+                                        void *data);
+        typedef void (*cra_ulc_window) (cra_window_t window, cra_status status,
+                                        void *data);
 
-                cra_closure_finalizer finalizer;
-        } * cra_callback_closure_t;
-        typedef cra_callback_handler_result (*cra_callback_handler) (
-            cra_callback_closure_t closure, void *data);
+        // handler function types
 
-        typedef void (*cra_userland_void_callback) (void *void_result,
-                                                    cra_status status,
-                                                    void *data);
-        typedef void (*cra_userland_engine_callback) (cra_engine_t engine,
-                                                      cra_status status,
-                                                      void *data);
-        typedef void (*cra_userland_window_callback) (cra_window_t window,
-                                                      cra_status status,
-                                                      void *data);
+        typedef void (*cra_ulh_window_close) (cra_window_t window, void *data);
         // typedef int (*cra_engine_window_on_click_cb)(const struct
         // cra_engine_window_on_click_cbparams* params, void* data); typedef
         // int (*cra_engine_window_on_contentresize_cb)(const struct
@@ -184,19 +173,21 @@ extern "C"
         // int (*cra_engine_block_new_cb)(cra_block_t block, void* data);
 
         // api
+        CRA_EXTERN int
+        cra_closure_execute_and_finalize (cra_ulc_closure_t closure);
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);
-        CRA_EXTERN int cra_destroy ();
+        CRA_EXTERN int cra_destroy (void);
 
         CRA_EXTERN int cra_engine_new (cra_engine_t *engine,
-                                       cra_callback_handler callback_handler,
+                                       cra_ulc_invoker callback_handler,
                                        void *callback_handler_data);
         CRA_EXTERN int cra_engine_delete (cra_engine_t engine);
 
         CRA_EXTERN int cra_engine_init (cra_engine_t engine,
-                                        cra_userland_engine_callback callback,
+                                        cra_ulc_engine callback,
                                         void *callback_data);
         CRA_EXTERN int cra_engine_stop (cra_engine_t engine,
-                                        cra_userland_engine_callback callback,
+                                        cra_ulc_engine callback,
                                         void *callback_data);
 
         // CRA_EXTERN int cra_engine_block_new(cra_engine_t engine, const
@@ -209,19 +200,21 @@ extern "C"
 
         CRA_EXTERN int cra_window_new (cra_engine_t engine,
                                        const cra_window_new_params_t params,
-                                       cra_userland_window_callback callback,
+                                       cra_ulc_window callback,
                                        void *callback_data);
         CRA_EXTERN int cra_window_delete (cra_window_t window,
-                                          cra_userland_void_callback callback,
+                                          cra_ulc_void callback,
                                           void *callback_data);
         CRA_EXTERN int cra_window_shouldclose (cra_window_t window,
                                                int *result);
         CRA_EXTERN int cra_window_get_engine (cra_window_t window,
                                               cra_engine_t *engine);
-        CRA_EXTERN int
-        cra_window_load_gl (cra_window_t window,
-                            cra_userland_window_callback callback,
-                            void *callback_data);
+        CRA_EXTERN int cra_window_load_gl (cra_window_t window,
+                                           cra_ulc_window callback,
+                                           void *callback_data);
+        CRA_EXTERN int cra_window_on_close (cra_window_t window,
+                                            cra_ulh_window_close handler,
+                                            void *handler_data);
         // CRA_EXTERN int cra_engine_window_on_click(cra_window_t window, void*
         // data, cra_engine_window_on_click_cb callback); CRA_EXTERN int
         // cra_engine_window_on_contentresize(cra_window_t window, void* data,
@@ -232,8 +225,6 @@ extern "C"
         // cra_engine_window_on_resize_cb callback); CRA_EXTERN int
         // cra_engine_window_on_scroll(cra_window_t window, void* data,
         // cra_engine_window_on_scroll_cb callback); CRA_EXTERN int
-        // cra_engine_window_on_shouldclose(cra_window_t window, void* data,
-        // cra_cb callback);
 
 #ifdef __cplusplus
 }

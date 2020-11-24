@@ -7,22 +7,13 @@ project(crankshaft)
 set(LIBCRANKSHAFT_TARGET crankshaft)
 set(CRANKSHAFT_EXAMPLE_INIT crankshaft-example-init)
 
+file(GLOB_RECURSE LIBCRANKSHAFT_TARGET_SRC src/*.c src/**/*.c)
+
 add_library(
   ${LIBCRANKSHAFT_TARGET}
   SHARED
     deps/glfw-3.3.2/deps/glad_gl.c
-    src/cra_destroy.c
-    src/cra_engine_delete.c
-    src/cra_engine_init.c
-    src/cra_engine_new.c
-    src/cra_engine_stop.c
-    src/cra_init.c
-    src/cra_window_delete.c
-    src/cra_window_get_engine.c
-    src/cra_window_load_gl.c
-    src/cra_window_new.c
-    src/cra_window_shouldclose.c
-    src/crankshaft_internal.c
+    ${LIBCRANKSHAFT_TARGET_SRC}
 )
 
 target_include_directories(

@@ -1,4 +1,9 @@
-#include "crankshaft_internal.h"
+#include "icra_checks.h"
+#include "icra_engine.h"
+#include "icra_mem.h"
+#include "icra_ulc_closure.h"
+#include "icra_window.h"
+#include <glib/glib.h>
 
 void
 engine_swap_windows (cra_engine_t engine)
@@ -39,11 +44,11 @@ engine_thread_func (cra_engine_t engine)
         double last_update, last_render, last_poll;
         last_update = last_render = last_poll = glfwGetTime ();
 
-        struct cra_callback_closure_s poll_events_closure;
+        struct icra_ulc_closure_s poll_events_closure;
         ICRA_MEMSET0 (&poll_events_closure);
 
-        icra_closure_init (&poll_events_closure, poll_events, NULL,
-                           icra_closure_noop_finalizer);
+        icra_ulc_closure_init (&poll_events_closure, poll_events, NULL,
+                               icra_ulc_closure_noop_finalizer);
 
         while (!engine->gl_loop_shouldquit)
         {
@@ -60,7 +65,7 @@ engine_thread_func (cra_engine_t engine)
                 if (poll_diff >= 0.03)
                 {
                         last_poll = loop_start;
-                        icra_dispatch_make_callback (
+                        icra_ulc_mainthread_enqueue_closure (
                             engine, &poll_events_closure, cra_ok, NULL);
                 }
 
@@ -86,18 +91,17 @@ engine_thread_func (cra_engine_t engine)
 }
 
 int
-cra_engine_new (cra_engine_t *engine_ptr,
-                cra_callback_handler callback_handler,
-                void *callback_handler_data)
+cra_engine_new (cra_engine_t *engine_ptr, cra_ulc_invoker ulc_invoker,
+                void *ulc_invoker_uld)
 {
         ICRA_CHECK_PARAM_NOTNULL (engine_ptr);
-        ICRA_CHECK_PARAM_NOTNULL (callback_handler);
-        ICRA_UNCHECKED (callback_handler_data);
+        ICRA_CHECK_PARAM_NOTNULL (ulc_invoker);
+        ICRA_UNCHECKED (ulc_invoker_uld);
 
         cra_engine_t engine;
         ICRA_MALLOC (engine);
-        engine->callback_handler = callback_handler;
-        engine->callback_handler_data = callback_handler_data;
+        engine->ulc_invoker = ulc_invoker;
+        engine->ulc_invoker_uld = ulc_invoker_uld;
         engine->context = g_main_context_new ();
         engine->gl_loop = g_main_loop_new (engine->context, false);
         engine->gl_thread = g_thread_new (
