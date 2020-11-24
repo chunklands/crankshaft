@@ -2,6 +2,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "glfw.h"
 
 void
 icra_ulc_closure_deleter_finalizer (cra_ulc_closure_t closure)

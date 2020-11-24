@@ -1,6 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 
@@ -13,6 +14,8 @@ typedef struct dd_s
 gboolean
 dispatch_window_new (dd_t dd)
 {
+        ICRA_PREAMBLE_DISPATCH ();
+
         ICRA_ASSERT (dd != NULL);
         ICRA_ASSERT (dd->window != NULL);
         ICRA_ASSERT (dd->window->engine != NULL);
@@ -33,6 +36,8 @@ dispatch_window_new (dd_t dd)
 void
 window_close_callback_handler (GLFWwindow *glfw_window)
 {
+        ICRA_PREAMBLE_HANDLER ();
+
         ICRA_ASSERT (glfw_window != NULL);
 
         cra_window_t window = glfwGetWindowUserPointer (glfw_window);
@@ -54,6 +59,8 @@ int
 cra_window_new (cra_engine_t engine, const cra_window_new_params_t params,
                 cra_ulc_window callback, void *callback_data)
 {
+        ICRA_PREAMBLE_API ();
+
         ICRA_CHECK_PARAM_NOTNULL (engine);
         ICRA_CHECK_PARAM_NOTNULL (params);
         ICRA_UNCHECKED (callback);

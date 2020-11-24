@@ -1,6 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 
@@ -13,6 +14,8 @@ typedef struct dd_s
 gboolean
 dispatch_window_delete (dd_t dd)
 {
+        ICRA_PREAMBLE_DISPATCH ();
+
         ICRA_ASSERT (dd != NULL);
         ICRA_ASSERT (dd->window != NULL);
 
@@ -41,6 +44,8 @@ int
 cra_window_delete (cra_window_t window, cra_ulc_void callback,
                    void *callback_data)
 {
+        ICRA_PREAMBLE_API ();
+
         ICRA_CHECK_PARAM_NOTNULL (window);
 
         ICRA_ASSERT (window->engine != NULL);

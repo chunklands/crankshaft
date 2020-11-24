@@ -1,6 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include <glib/glib.h>
 
@@ -13,6 +14,8 @@ typedef struct dd_s
 gboolean
 dispatch_engine_init (dd_t dd)
 {
+        ICRA_PREAMBLE_DISPATCH ();
+
         ICRA_ASSERT (dd != NULL);
         ICRA_ASSERT (dd->engine != NULL);
         ICRA_ASSERT_THREAD_OPENGL (dd->engine);
@@ -27,6 +30,8 @@ int
 cra_engine_init (cra_engine_t engine, cra_ulc_engine callback,
                  void *callback_data)
 {
+        ICRA_PREAMBLE_API ();
+
         ICRA_CHECK_PARAM_NOTNULL (engine);
         ICRA_UNCHECKED (callback);
         ICRA_UNCHECKED (callback_data);

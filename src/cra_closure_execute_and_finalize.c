@@ -1,9 +1,11 @@
 #include "icra_checks.h"
+#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 
 int
 cra_closure_execute_and_finalize (cra_ulc_closure_t closure)
 {
+        ICRA_PREAMBLE_API_F ();
         ICRA_CHECK_PARAM_NOTNULL (closure);
 
         // TODO(daaitch): check for main thread => needs engine be part of

@@ -1,6 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 #include <glib/glib.h>
@@ -50,7 +51,7 @@ engine_thread_func (cra_engine_t engine)
         icra_ulc_closure_init (&poll_events_closure, poll_events, NULL,
                                icra_ulc_closure_noop_finalizer);
 
-        while (!engine->gl_loop_shouldquit)
+        while (!engine->gl_loop_quit)
         {
                 const double loop_start = glfwGetTime ();
                 const double refresh_interval
@@ -71,7 +72,7 @@ engine_thread_func (cra_engine_t engine)
 
                 const double swap_time = loop_start + refresh_interval * 0.75;
                 for (double now = glfwGetTime ();
-                     now < swap_time && !engine->gl_loop_shouldquit;
+                     now < swap_time && !engine->gl_loop_quit;
                      now = glfwGetTime ())
                 {
                         gboolean event_dispatched = g_main_context_iteration (
@@ -103,7 +104,6 @@ cra_engine_new (cra_engine_t *engine_ptr, cra_ulc_invoker ulc_invoker,
         engine->ulc_invoker = ulc_invoker;
         engine->ulc_invoker_uld = ulc_invoker_uld;
         engine->context = g_main_context_new ();
-        engine->gl_loop = g_main_loop_new (engine->context, false);
         engine->gl_thread = g_thread_new (
             "GL Thread", (GThreadFunc)engine_thread_func, engine);
 

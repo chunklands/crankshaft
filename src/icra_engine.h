@@ -7,6 +7,8 @@
 
 struct icra_engine_s
 {
+        void *uld;
+
         cra_ulc_invoker ulc_invoker;
         void *ulc_invoker_uld;
 
@@ -16,7 +18,7 @@ struct icra_engine_s
         GThread *main_thread;
 
         bool gl_loop_shouldquit;
-        GMainLoop *gl_loop;
+        bool gl_loop_quit;
         void *gl_last_result;
         GThread *gl_thread;
 

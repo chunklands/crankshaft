@@ -178,14 +178,17 @@ extern "C"
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);
         CRA_EXTERN int cra_destroy (void);
 
-        CRA_EXTERN int cra_engine_new (cra_engine_t *engine,
-                                       cra_ulc_invoker callback_handler,
-                                       void *callback_handler_data);
         CRA_EXTERN int cra_engine_delete (cra_engine_t engine);
-
+        CRA_EXTERN int cra_engine_get_user_pointer (cra_engine_t engine,
+                                                    void **data_ptr);
         CRA_EXTERN int cra_engine_init (cra_engine_t engine,
                                         cra_ulc_engine callback,
                                         void *callback_data);
+        CRA_EXTERN int cra_engine_new (cra_engine_t *engine,
+                                       cra_ulc_invoker callback_handler,
+                                       void *callback_handler_data);
+        CRA_EXTERN int cra_engine_set_user_pointer (cra_engine_t engine,
+                                                    void *data);
         CRA_EXTERN int cra_engine_stop (cra_engine_t engine,
                                         cra_ulc_engine callback,
                                         void *callback_data);

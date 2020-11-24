@@ -1,6 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
+#include "icra_preambles.h"
 #include "icra_ulh_closure.h"
 #include "icra_window.h"
 
@@ -9,6 +10,8 @@ typedef icra_window_close_ulh_closure_t dd_t;
 gboolean
 dispatch_window_on_close (icra_window_close_ulh_closure_t dd)
 {
+        ICRA_PREAMBLE_DISPATCH ();
+
         ICRA_ASSERT (dd != NULL);
         dd->window->on_close = g_slist_prepend (dd->window->on_close, dd);
 
@@ -19,6 +22,8 @@ int
 cra_window_on_close (cra_window_t window, cra_ulh_window_close handler,
                      void *handler_data)
 {
+        ICRA_PREAMBLE_API ();
+
         ICRA_CHECK_PARAM_NOTNULL (window);
         ICRA_CHECK_PARAM_NOTNULL (handler);
         ICRA_UNCHECKED (handler_data);

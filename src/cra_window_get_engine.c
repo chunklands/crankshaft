@@ -1,9 +1,12 @@
 #include "icra_checks.h"
+#include "icra_preambles.h"
 #include "icra_window.h"
 
 int
 cra_window_get_engine (cra_window_t window, cra_engine_t *engine)
 {
+        ICRA_PREAMBLE_API ();
+
         ICRA_CHECK_PARAM_NOTNULL (window);
         ICRA_CHECK_PARAM_NOTNULL (engine);
 
