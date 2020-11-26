@@ -1,7 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
+#include "icra_log.h"
 #include "icra_mem.h"
-#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 
@@ -11,7 +11,7 @@ typedef struct dd_s
         cra_window_t window;
 } * dd_t;
 
-gboolean
+static gboolean
 dispatch_window_new (dd_t dd)
 {
         ICRA_PREAMBLE_DISPATCH ();
@@ -24,6 +24,8 @@ dispatch_window_new (dd_t dd)
         cra_window_t window = dd->window;
         cra_engine_t engine = window->engine;
 
+        icra_log_info ("create window %p dispatched", (void *)window);
+
         gboolean inserted
             = g_hash_table_add (engine->window_instances, window);
         ICRA_ASSERT (inserted);
@@ -33,7 +35,7 @@ dispatch_window_new (dd_t dd)
         return G_SOURCE_REMOVE;
 }
 
-void
+static void
 window_close_callback_handler (GLFWwindow *glfw_window)
 {
         ICRA_PREAMBLE_HANDLER ();
@@ -43,6 +45,8 @@ window_close_callback_handler (GLFWwindow *glfw_window)
         cra_window_t window = glfwGetWindowUserPointer (glfw_window);
         ICRA_ASSERT (window != NULL);
         ICRA_ASSERT_THREAD_MAIN (window->engine);
+
+        icra_log_info ("window close event handled %p", (void *)window);
 
         for (GSList *it = window->on_close; it != NULL; it = it->next)
         {
@@ -86,6 +90,8 @@ cra_window_new (cra_engine_t engine, const cra_window_new_params_t params,
         ICRA_MALLOC (window);
         window->engine = engine;
         window->glfw_window = glfw_window;
+
+        icra_log_info ("create window %p", (void *)window);
 
         glfwSetWindowUserPointer (glfw_window, window);
         glfwSetWindowCloseCallback (glfw_window,

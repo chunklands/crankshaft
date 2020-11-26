@@ -1,8 +1,8 @@
 #include "icra_ulc_closure.h"
+#include "glfw.h"
 #include "icra_checks.h"
 #include "icra_engine.h"
 #include "icra_mem.h"
-#include "glfw.h"
 
 void
 icra_ulc_closure_deleter_finalizer (cra_ulc_closure_t closure)
@@ -43,8 +43,8 @@ icra_engine_make_callback (cra_engine_t engine, cra_ulc_closure_t closure)
 }
 
 void
-icra_ulc_closure_finish_and_execute (cra_ulc_closure_t closure,
-                                     cra_status ulc_status, void *ulc_result)
+icra_ulc_closure_finish (cra_ulc_closure_t closure, cra_status ulc_status,
+                         void *ulc_result)
 {
         ICRA_ASSERT (closure != NULL);
         ICRA_ASSERT (closure->ulc != NULL);
@@ -54,7 +54,13 @@ icra_ulc_closure_finish_and_execute (cra_ulc_closure_t closure,
 
         closure->ulc_status = ulc_status;
         closure->ulc_result = ulc_result;
+}
 
+void
+icra_ulc_closure_finish_and_execute (cra_ulc_closure_t closure,
+                                     cra_status ulc_status, void *ulc_result)
+{
+        icra_ulc_closure_finish (closure, ulc_status, ulc_result);
         icra_ulc_closure_execute (closure);
 }
 

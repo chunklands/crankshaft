@@ -1,13 +1,13 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
+#include "icra_log.h"
 #include "icra_mem.h"
-#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 #include <glib/glib.h>
 
-void
-engine_swap_windows (cra_engine_t engine)
+static void
+swap_windows (cra_engine_t engine)
 {
         // check engine is initialized
         if (!engine->window_instances)
@@ -26,7 +26,7 @@ engine_swap_windows (cra_engine_t engine)
         }
 }
 
-void
+static void
 poll_events (void *result, cra_status status, void *user_data)
 {
         ICRA_ASSERT (result == NULL);
@@ -36,20 +36,16 @@ poll_events (void *result, cra_status status, void *user_data)
         glfwPollEvents ();
 }
 
-void *
-engine_thread_func (cra_engine_t engine)
+static void *
+opengl_thread_func (cra_engine_t engine)
 {
         ICRA_ASSERT (engine != NULL);
         ICRA_ASSERT_THREAD_OPENGL (engine);
 
+        icra_log_info ("start OpenGL thread");
+
         double last_update, last_render, last_poll;
         last_update = last_render = last_poll = glfwGetTime ();
-
-        struct icra_ulc_closure_s poll_events_closure;
-        ICRA_MEMSET0 (&poll_events_closure);
-
-        icra_ulc_closure_init (&poll_events_closure, poll_events, NULL,
-                               icra_ulc_closure_noop_finalizer);
 
         while (!engine->gl_loop_quit)
         {
@@ -67,7 +63,8 @@ engine_thread_func (cra_engine_t engine)
                 {
                         last_poll = loop_start;
                         icra_ulc_mainthread_enqueue_closure (
-                            engine, &poll_events_closure, cra_ok, NULL);
+                            engine, &engine->gl_loop_poll_events_closure,
+                            cra_ok, NULL);
                 }
 
                 const double swap_time = loop_start + refresh_interval * 0.75;
@@ -78,15 +75,26 @@ engine_thread_func (cra_engine_t engine)
                         gboolean event_dispatched = g_main_context_iteration (
                             engine->context, FALSE);
                         if (!event_dispatched)
+                        {
+                                g_thread_yield ();
                                 break;
+                        }
                 }
 
                 // update(loop_start - last_update, loop_start);
                 last_update = loop_start;
 
                 if (!engine->gl_loop_shouldquit)
-                        engine_swap_windows (engine);
+                        swap_windows (engine);
         }
+
+        if (engine->gl_loop_quit_callback)
+        {
+                engine->gl_loop_quit_callback (
+                    engine->gl_loop_quit_callback_data);
+        }
+
+        icra_log_info ("end OpenGL thread");
 
         return NULL;
 }
@@ -104,8 +112,16 @@ cra_engine_new (cra_engine_t *engine_ptr, cra_ulc_invoker ulc_invoker,
         engine->ulc_invoker = ulc_invoker;
         engine->ulc_invoker_uld = ulc_invoker_uld;
         engine->context = g_main_context_new ();
+
+        icra_ulc_closure_init (&engine->gl_loop_poll_events_closure,
+                               poll_events, NULL,
+                               icra_ulc_closure_noop_finalizer);
+
         engine->gl_thread = g_thread_new (
-            "GL Thread", (GThreadFunc)engine_thread_func, engine);
+            "GL Thread", (GThreadFunc)opengl_thread_func, engine);
+
+        icra_log_info ("new engine %p, with OpenGL thread %p", (void *)engine,
+                       (void *)engine->gl_thread);
 
         *engine_ptr = engine;
         return cra_ok;

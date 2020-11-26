@@ -22,6 +22,9 @@ struct icra_ulc_closure_s
         icra_ulc_closure_finalizer finalizer;
 };
 
+void icra_ulc_closure_finish (cra_ulc_closure_t closure, cra_status ulc_status,
+                              void *ulc_result);
+
 void icra_ulc_closure_finish_and_execute (cra_ulc_closure_t closure,
                                           cra_status ulc_status,
                                           void *ulc_result);

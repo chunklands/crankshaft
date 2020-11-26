@@ -1,7 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
+#include "icra_log.h"
 #include "icra_mem.h"
-#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
 
@@ -11,7 +11,7 @@ typedef struct dd_s
         cra_window_t window;
 } * dd_t;
 
-gboolean
+static gboolean
 dispatch_window_load_gl (dd_t dd)
 {
         ICRA_PREAMBLE_DISPATCH ();
@@ -28,10 +28,13 @@ dispatch_window_load_gl (dd_t dd)
 
         if (gladLoadGL ((GLADloadfunc)glfwGetProcAddress) == 0)
         {
+                g_error ("gladLoadGL for window %p failed", (void *)window);
                 icra_ulc_mainthread_enqueue_closure (engine, &dd->closure,
                                                      cra_err_lib, window);
                 return G_SOURCE_REMOVE;
         }
+
+        icra_log_info ("load OpenGL for window %p dispatched", (void *)window);
 
         window->glfw_loaded_gl = true;
 
@@ -49,6 +52,8 @@ cra_window_load_gl (cra_window_t window, cra_ulc_window callback,
         ICRA_CHECK_PARAM_NOTNULL (window);
         ICRA_UNCHECKED (callback);
         ICRA_UNCHECKED (callback_data);
+
+        icra_log_info ("load OpenGL for window %p", (void *)window);
 
         dd_t dd;
         ICRA_MALLOC (dd);

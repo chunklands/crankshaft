@@ -16,6 +16,8 @@ add_library(
     ${LIBCRANKSHAFT_TARGET_SRC}
 )
 
+target_compile_definitions(${LIBCRANKSHAFT_TARGET} PUBLIC LOG_USE_COLOR)
+
 target_include_directories(
   ${LIBCRANKSHAFT_TARGET}
   PUBLIC

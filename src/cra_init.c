@@ -2,8 +2,8 @@
 #include "glfw.h"
 #include "icra_checks.h"
 #include "icra_crankshaft.h"
+#include "icra_log.h"
 #include "icra_mem.h"
-#include "icra_preambles.h"
 #include <crankshaft.h>
 
 int
@@ -13,6 +13,8 @@ cra_init (cra_error_handler error_handler, void *data)
 
         ICRA_UNCHECKED (error_handler);
         ICRA_UNCHECKED (data);
+
+        icra_log_info ("initialize crankshaft");
 
         ICRA_CHECK_LOGIC (icra_crankshaft == NULL);
         ICRA_MALLOC (icra_crankshaft);

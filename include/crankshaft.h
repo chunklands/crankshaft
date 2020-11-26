@@ -36,6 +36,16 @@ extern "C"
                 cra_status_max
         } cra_status;
 
+        typedef enum
+        {
+                cra_loglevel_trace = 0,
+                cra_loglevel_debug = 1,
+                cra_loglevel_info = 2,
+                cra_loglevel_warn = 3,
+                cra_loglevel_error = 4,
+                cra_loglevel_fatal = 5
+        } cra_loglevel;
+
         // handles
         typedef struct icra_engine_s *cra_engine_t;
         typedef struct icra_window_s *cra_window_t;
@@ -173,6 +183,7 @@ extern "C"
         // int (*cra_engine_block_new_cb)(cra_block_t block, void* data);
 
         // api
+        CRA_EXTERN int cra_log_set_level (cra_loglevel level);
         CRA_EXTERN int
         cra_closure_execute_and_finalize (cra_ulc_closure_t closure);
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);

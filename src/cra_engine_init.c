@@ -1,7 +1,7 @@
 #include "icra_checks.h"
 #include "icra_engine.h"
+#include "icra_log.h"
 #include "icra_mem.h"
-#include "icra_preambles.h"
 #include "icra_ulc_closure.h"
 #include <glib/glib.h>
 
@@ -11,7 +11,7 @@ typedef struct dd_s
         cra_engine_t engine;
 } * dd_t;
 
-gboolean
+static gboolean
 dispatch_engine_init (dd_t dd)
 {
         ICRA_PREAMBLE_DISPATCH ();
@@ -19,6 +19,8 @@ dispatch_engine_init (dd_t dd)
         ICRA_ASSERT (dd != NULL);
         ICRA_ASSERT (dd->engine != NULL);
         ICRA_ASSERT_THREAD_OPENGL (dd->engine);
+
+        icra_log_info ("initialize engine %p dispatched", (void *)dd->engine);
 
         icra_ulc_mainthread_enqueue_closure (dd->engine, &dd->closure, cra_ok,
                                              dd->engine);
@@ -38,6 +40,8 @@ cra_engine_init (cra_engine_t engine, cra_ulc_engine callback,
 
         ICRA_CHECK_LOGIC (!engine->initialized);
         engine->initialized = true;
+
+        icra_log_info ("initialize engine %p", (void *)engine);
 
         ICRA_ASSERT (engine->main_thread == NULL);
         engine->main_thread = g_thread_self ();
