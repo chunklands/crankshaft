@@ -31,7 +31,7 @@ dispatch_window_delete (dd_t dd)
         // TODO(daaitch): on_close clean
 
         GLFWwindow *glfw_window = window->glfw_window;
-        ICRA_FREE (window);
+        icra_free (window);
 
         icra_log_info ("delete window %p dispatched", (void *)window);
 

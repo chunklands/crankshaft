@@ -32,7 +32,7 @@ extern "C"
                 cra_err_logic,
                 cra_err_lib,
                 cra_err_thread,
-                cra_err_user,
+                cra_err_gl,
                 cra_status_max
         } cra_status;
 
@@ -93,7 +93,7 @@ extern "C"
                 const char *title;
         } * cra_window_new_params_t;
 
-        struct cra_engine_render_pipeline_init_params
+        struct cra_renderpipeline_init_params
         {
                 const char *gbuffer_vertex_shader;
                 const char *gbuffer_fragment_shader;
@@ -229,6 +229,10 @@ extern "C"
         CRA_EXTERN int cra_window_on_close (cra_window_t window,
                                             cra_ulh_window_close handler,
                                             void *handler_data);
+        CRA_EXTERN int cra_renderpipeline_init (
+            cra_window_t window,
+            struct cra_renderpipeline_init_params params,
+            cra_ulc_window callback, void *callback_data);
         // CRA_EXTERN int cra_engine_window_on_click(cra_window_t window, void*
         // data, cra_engine_window_on_click_cb callback); CRA_EXTERN int
         // cra_engine_window_on_contentresize(cra_window_t window, void* data,

@@ -4,7 +4,7 @@
 #include "icra_log.h"
 #include "icra_mem.h"
 #include "icra_ulc_closure.h"
-#include <glib/glib.h>
+#include <glib.h>
 
 typedef struct dd_s
 {

@@ -13,4 +13,6 @@ typedef struct icra_crankshaft_s
 
 icra_crankshaft_t icra_crankshaft;
 
+void icra_crankshaft_error (int status);
+
 #endif // __CRANKSHAFT_ICRA_CRANKSHAFT_H__

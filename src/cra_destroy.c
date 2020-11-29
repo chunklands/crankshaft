@@ -11,7 +11,7 @@ cra_destroy ()
 
         icra_log_info ("crankshaft destroy");
 
-        ICRA_FREE (icra_crankshaft);
+        icra_free (icra_crankshaft);
         icra_crankshaft = NULL;
 
         return cra_ok;

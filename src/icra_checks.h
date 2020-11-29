@@ -2,7 +2,7 @@
 #define __CRANKSHAFT_ICRA_CHECKS_H__
 
 #include "icra_crankshaft.h"
-#include <glib/glib.h>
+#include <glib.h>
 #include <stdbool.h>
 
 // ASSERT:
@@ -51,6 +51,8 @@
 
 #define ICRA_CHECK_LOGIC(expr) ICRA_CHECK ((expr), cra_err_logic)
 #define ICRA_CHECK_LIB(expr) ICRA_CHECK ((expr), cra_err_lib)
+
+#define ICRA_CHECK_STATUS(status) ICRA_CHECK ((status) == cra_ok, status)
 
 bool icra_is_main_thread (cra_engine_t engine);
 bool icra_is_opengl_thread (cra_engine_t engine);

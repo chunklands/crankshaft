@@ -4,7 +4,7 @@
 #include "icra_mem.h"
 #include "icra_ulc_closure.h"
 #include "icra_window.h"
-#include <glib/glib.h>
+#include <glib.h>
 
 static void
 swap_windows (cra_engine_t engine)

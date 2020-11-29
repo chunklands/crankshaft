@@ -20,7 +20,7 @@ icra_ulh_closure_init (cra_ulh_closure_t closure, void (*ulh) (),
 void
 icra_ulh_closure_deleter_finalizer (cra_ulh_closure_t closure)
 {
-        ICRA_FREE (closure);
+        icra_free (closure);
 }
 
 void

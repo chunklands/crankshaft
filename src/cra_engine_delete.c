@@ -2,7 +2,7 @@
 #include "icra_engine.h"
 #include "icra_log.h"
 #include "icra_mem.h"
-#include <glib/glib.h>
+#include <glib.h>
 
 int
 cra_engine_delete (cra_engine_t engine)
@@ -14,6 +14,6 @@ cra_engine_delete (cra_engine_t engine)
 
         g_main_context_unref (engine->context);
 
-        ICRA_FREE (engine);
+        icra_free (engine);
         return cra_ok;
 }

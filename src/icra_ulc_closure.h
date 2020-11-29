@@ -2,7 +2,7 @@
 #define __CRANKSHAFT_ICRA_ULC_CLOSURE_H__
 
 #include <crankshaft.h>
-#include <glib/glib.h>
+#include <glib.h>
 
 #define ICRA_DD_CALLBACK_CLOSURE_FIELD struct icra_ulc_closure_s closure;
 

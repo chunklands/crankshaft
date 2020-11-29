@@ -42,7 +42,7 @@ window_close_callback_handler (GLFWwindow *glfw_window)
 
         ICRA_ASSERT (glfw_window != NULL);
 
-        cra_window_t window = glfwGetWindowUserPointer (glfw_window);
+        cra_window_t window = icra_window_get_from_glfw_window (glfw_window);
         ICRA_ASSERT (window != NULL);
         ICRA_ASSERT_THREAD_MAIN (window->engine);
 

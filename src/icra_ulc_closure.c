@@ -7,7 +7,7 @@
 void
 icra_ulc_closure_deleter_finalizer (cra_ulc_closure_t closure)
 {
-        ICRA_FREE (closure);
+        icra_free (closure);
 }
 
 void

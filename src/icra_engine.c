@@ -1,6 +1,6 @@
 #include "icra_engine.h"
 #include "icra_checks.h"
-#include <glib/glib.h>
+#include <glib.h>
 
 void
 icra_engine_openglthread_enqueue_dispatcher (
