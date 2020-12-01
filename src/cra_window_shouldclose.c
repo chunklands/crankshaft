@@ -1,7 +1,4 @@
-#include "glfw.h"
-#include "icra_checks.h"
-#include "icra_log.h"
-#include "icra_window.h"
+#include "icra.h"
 
 int
 cra_window_shouldclose (cra_window_t window, int *result)

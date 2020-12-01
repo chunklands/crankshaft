@@ -1,7 +1,5 @@
 
-#include "icra_gl_renderquad.h"
-#include "icra_gl_vao.h"
-#include "icra_mem.h"
+#include "icra.h"
 
 static GLfloat const quad_vertices[] = {
         -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,

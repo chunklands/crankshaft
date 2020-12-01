@@ -1,8 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include <glib.h>
+#include "icra.h"
 
 int
 cra_engine_delete (cra_engine_t engine)

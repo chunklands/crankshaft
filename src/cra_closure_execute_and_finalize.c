@@ -1,6 +1,4 @@
-#include "icra_checks.h"
-#include "icra_log.h"
-#include "icra_ulc_closure.h"
+#include "icra.h"
 
 int
 cra_closure_execute_and_finalize (cra_ulc_closure_t closure)

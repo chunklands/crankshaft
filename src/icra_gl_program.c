@@ -1,9 +1,4 @@
-#include "icra_gl_program.h"
-#include "icra_checks.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include <crankshaft.h>
-#include <stdbool.h>
+#include "icra.h"
 
 struct icra_gl_program_s
 {

@@ -1,10 +1,5 @@
 
-#include "glfw.h"
-#include "icra_checks.h"
-#include "icra_crankshaft.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include <crankshaft.h>
+#include "icra.h"
 
 int
 cra_init (cra_error_handler error_handler, void *data)

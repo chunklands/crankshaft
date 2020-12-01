@@ -1,7 +1,5 @@
 
-#include "icra_ulh_closure.h"
-#include "icra_checks.h"
-#include "icra_mem.h"
+#include "icra.h"
 
 void
 icra_ulh_closure_init (cra_ulh_closure_t closure, void (*ulh) (),

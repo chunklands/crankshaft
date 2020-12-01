@@ -1,8 +1,4 @@
-#include "icra_ulc_closure.h"
-#include "glfw.h"
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_mem.h"
+#include "icra.h"
 
 void
 icra_ulc_closure_deleter_finalizer (cra_ulc_closure_t closure)

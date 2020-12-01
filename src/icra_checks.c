@@ -1,5 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
+#include "icra.h"
 
 bool
 icra_is_main_thread (cra_engine_t engine)

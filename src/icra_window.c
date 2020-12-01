@@ -1,6 +1,5 @@
 
-#include "icra_window.h"
-#include "icra_checks.h"
+#include "icra.h"
 
 cra_window_t
 icra_window_get_from_glfw_window (GLFWwindow *glfw_window)

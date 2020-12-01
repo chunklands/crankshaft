@@ -1,6 +1,4 @@
-#include "icra_checks.h"
-#include "icra_log.h"
-#include "icra_window.h"
+#include "icra.h"
 
 int
 cra_window_get_engine (cra_window_t window, cra_engine_t *engine)

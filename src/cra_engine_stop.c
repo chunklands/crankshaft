@@ -1,10 +1,4 @@
-#include "glfw.h"
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include "icra_ulc_closure.h"
-#include <glib.h>
+#include "icra.h"
 
 typedef struct dd_s
 {

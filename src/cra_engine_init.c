@@ -1,9 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include "icra_ulc_closure.h"
-#include <glib.h>
+#include "icra.h"
 
 typedef struct dd_s
 {
@@ -49,6 +44,8 @@ cra_engine_init (cra_engine_t engine, cra_ulc_engine callback,
         ICRA_ASSERT (engine->window_instances == NULL);
         engine->window_instances
             = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+        engine->game_blocks = g_array_new (FALSE, FALSE, sizeof (cra_block_t));
 
         dd_t dd;
         ICRA_MALLOC (dd);

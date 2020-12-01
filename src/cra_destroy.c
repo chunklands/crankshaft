@@ -1,7 +1,4 @@
-#include "icra_checks.h"
-#include "icra_crankshaft.h"
-#include "icra_log.h"
-#include "icra_mem.h"
+#include "icra.h"
 
 int
 cra_destroy ()

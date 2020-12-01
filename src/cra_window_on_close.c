@@ -1,9 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include "icra_ulh_closure.h"
-#include "icra_window.h"
+#include "icra.h"
 
 typedef icra_window_close_ulh_closure_t dd_t;
 

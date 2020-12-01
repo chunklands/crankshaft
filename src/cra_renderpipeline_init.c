@@ -1,11 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_gl_renderquad.h"
-#include "icra_log.h"
-#include "icra_mem.h"
-#include "icra_window.h"
-#include <crankshaft.h>
-#include <assert.h>
+#include "icra.h"
 
 typedef struct dd_framebuffer_size_s
 {
@@ -230,20 +223,20 @@ static void
 renderpipeline_init_closure_finalizer (cra_ulc_closure_t closure)
 {
         dd_t dd = (dd_t)closure;
-        ICRA_ASSERT(&dd->closure == closure);
+        ICRA_ASSERT (&dd->closure == closure);
 
-        icra_constfree(dd->params.gbuffer_vertex_shader);
-        icra_constfree(dd->params.gbuffer_fragment_shader);
-        icra_constfree(dd->params.lighting_vertex_shader);
-        icra_constfree(dd->params.lighting_fragment_shader);
-        icra_constfree(dd->params.selectblock_vertex_shader);
-        icra_constfree(dd->params.selectblock_fragment_shader);
-        icra_constfree(dd->params.sprite_vertex_shader);
-        icra_constfree(dd->params.sprite_fragment_shader);
-        icra_constfree(dd->params.text_vertex_shader);
-        icra_constfree(dd->params.text_fragment_shader);
+        icra_constfree (dd->params.gbuffer_vertex_shader);
+        icra_constfree (dd->params.gbuffer_fragment_shader);
+        icra_constfree (dd->params.lighting_vertex_shader);
+        icra_constfree (dd->params.lighting_fragment_shader);
+        icra_constfree (dd->params.selectblock_vertex_shader);
+        icra_constfree (dd->params.selectblock_fragment_shader);
+        icra_constfree (dd->params.sprite_vertex_shader);
+        icra_constfree (dd->params.sprite_fragment_shader);
+        icra_constfree (dd->params.text_vertex_shader);
+        icra_constfree (dd->params.text_fragment_shader);
 
-        icra_ulc_closure_deleter_finalizer(closure);
+        icra_ulc_closure_deleter_finalizer (closure);
 }
 
 int
@@ -272,16 +265,25 @@ cra_renderpipeline_init (cra_window_t window,
         dd->window = window;
         dd->engine = engine;
 
-        dd->params.gbuffer_vertex_shader = g_strdup(params.gbuffer_vertex_shader);
-        dd->params.gbuffer_fragment_shader = g_strdup(params.gbuffer_fragment_shader);
-        dd->params.lighting_vertex_shader = g_strdup(params.lighting_vertex_shader);
-        dd->params.lighting_fragment_shader = g_strdup(params.lighting_fragment_shader);
-        dd->params.selectblock_vertex_shader = g_strdup(params.selectblock_vertex_shader);
-        dd->params.selectblock_fragment_shader = g_strdup(params.selectblock_fragment_shader);
-        dd->params.sprite_vertex_shader = g_strdup(params.sprite_vertex_shader);
-        dd->params.sprite_fragment_shader = g_strdup(params.sprite_fragment_shader);
-        dd->params.text_vertex_shader = g_strdup(params.text_vertex_shader);
-        dd->params.text_fragment_shader = g_strdup(params.text_fragment_shader);
+        dd->params.gbuffer_vertex_shader
+            = g_strdup (params.gbuffer_vertex_shader);
+        dd->params.gbuffer_fragment_shader
+            = g_strdup (params.gbuffer_fragment_shader);
+        dd->params.lighting_vertex_shader
+            = g_strdup (params.lighting_vertex_shader);
+        dd->params.lighting_fragment_shader
+            = g_strdup (params.lighting_fragment_shader);
+        dd->params.selectblock_vertex_shader
+            = g_strdup (params.selectblock_vertex_shader);
+        dd->params.selectblock_fragment_shader
+            = g_strdup (params.selectblock_fragment_shader);
+        dd->params.sprite_vertex_shader
+            = g_strdup (params.sprite_vertex_shader);
+        dd->params.sprite_fragment_shader
+            = g_strdup (params.sprite_fragment_shader);
+        dd->params.text_vertex_shader = g_strdup (params.text_vertex_shader);
+        dd->params.text_fragment_shader
+            = g_strdup (params.text_fragment_shader);
 
         icra_engine_openglthread_enqueue_dispatcher (
             engine, dispatch_renderpipeline_init, dd);

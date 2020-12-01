@@ -1,6 +1,8 @@
 #ifndef __CRANKSHAFT_H__
 #define __CRANKSHAFT_H__
 
+#include <stdbool.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -49,41 +51,13 @@ extern "C"
         // handles
         typedef struct icra_engine_s *cra_engine_t;
         typedef struct icra_window_s *cra_window_t;
-        // typedef struct icra_block_s* cra_block_t;
-
-        // other types
-        enum cra_block_face_type
-        {
-                UNKNOWN,
-                LEFT,
-                RIGHT,
-                BOTTOM,
-                TOP,
-                FRONT,
-                BACK,
-        };
+        typedef struct icra_block_s *cra_block_t;
 
         struct __attribute__ ((packed)) cra_vertex
         {
                 float position[3];
                 float normal[3];
                 float uv[2];
-        };
-
-        // params
-        struct cra_engine_block_new_params_face
-        {
-                const char *name;
-                enum cra_block_face_type type;
-                const struct cra_vertex *data;
-        };
-
-        struct cra_engine_block_new_params
-        {
-                const char *id;
-                const struct cra_engine_block_new_params_face *faces;
-                int opaque;
-                const char *texture;
         };
 
         typedef struct cra_window_new_params_s
@@ -105,6 +79,41 @@ extern "C"
                 const char *sprite_fragment_shader;
                 const char *text_vertex_shader;
                 const char *text_fragment_shader;
+        };
+
+        enum cra_block_facetype
+        {
+                UNKNOWN,
+                LEFT,
+                RIGHT,
+                BOTTOM,
+                TOP,
+                FRONT,
+                BACK,
+        };
+
+        struct __attribute__ ((packed)) cra_vao_element_block
+        {
+                float position[3];
+                float normal[3];
+                float uv[2];
+        };
+
+        struct cra_block_face
+        {
+                enum cra_block_facetype facetype;
+                struct cra_vao_element_block *elements;
+                int elements_length;
+        };
+
+        struct cra_block_new_params
+        {
+                const char *id;
+                bool opaque;
+                const unsigned char *texture_content;
+                int texture_content_length;
+                struct cra_block_face *faces;
+                int faces_length;
         };
 
         // callback params
@@ -189,6 +198,10 @@ extern "C"
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);
         CRA_EXTERN int cra_destroy (void);
 
+        CRA_EXTERN int
+        cra_engine_block_new (cra_engine_t engine,
+                              const struct cra_block_new_params *params,
+                              cra_ulc_engine callback, void *callback_data);
         CRA_EXTERN int cra_engine_delete (cra_engine_t engine);
         CRA_EXTERN int cra_engine_get_user_pointer (cra_engine_t engine,
                                                     void **data_ptr);
@@ -229,10 +242,10 @@ extern "C"
         CRA_EXTERN int cra_window_on_close (cra_window_t window,
                                             cra_ulh_window_close handler,
                                             void *handler_data);
-        CRA_EXTERN int cra_renderpipeline_init (
-            cra_window_t window,
-            struct cra_renderpipeline_init_params params,
-            cra_ulc_window callback, void *callback_data);
+        CRA_EXTERN int
+        cra_renderpipeline_init (cra_window_t window,
+                                 struct cra_renderpipeline_init_params params,
+                                 cra_ulc_window callback, void *callback_data);
         // CRA_EXTERN int cra_engine_window_on_click(cra_window_t window, void*
         // data, cra_engine_window_on_click_cb callback); CRA_EXTERN int
         // cra_engine_window_on_contentresize(cra_window_t window, void* data,

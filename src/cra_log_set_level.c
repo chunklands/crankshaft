@@ -1,6 +1,4 @@
-#include "icra_checks.h"
-#include "icra_log.h"
-#include <crankshaft.h>
+#include "icra.h"
 
 int
 cra_log_set_level (cra_loglevel level)

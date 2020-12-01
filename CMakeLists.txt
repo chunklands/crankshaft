@@ -41,6 +41,7 @@ target_include_directories(
     ${GLIB_INCLUDE_DIRS}
     deps/glfw/deps
     deps/cglm/include
+    deps/stb
 )
 
 target_link_directories(

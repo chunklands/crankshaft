@@ -1,6 +1,4 @@
-#include "icra_checks.h"
-#include "icra_engine.h"
-#include "icra_log.h"
+#include "icra.h"
 
 int
 cra_engine_set_user_pointer (cra_engine_t engine, void *data)

@@ -1,6 +1,5 @@
 
-#include "icra_gl_vao.h"
-#include "icra_mem.h"
+#include "icra.h"
 
 struct icra_gl_vao_s
 {

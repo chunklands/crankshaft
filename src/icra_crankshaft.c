@@ -1,6 +1,4 @@
-#include "icra_crankshaft.h"
-#include "icra_checks.h"
-#include <stdlib.h>
+#include "icra.h"
 
 icra_crankshaft_t icra_crankshaft = NULL;
 
