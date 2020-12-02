@@ -1,3 +1,7 @@
+# CRANKSHAFT
+
+![crankshaft logo](./logo.png)
+
 ## install glib
 
 dependencies: meson, ninja
