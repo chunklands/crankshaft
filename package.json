@@ -1,15 +1,13 @@
 {
   "name": "crankshaft",
+  "private": true,
   "version": "1.0.0",
-  "dependencies": {
-    "clangformatjs": "^1.0.0"
-  },
-  "devDependencies": {},
   "scripts": {
-    "format": "clangformatjs src/**/*{.c,.h} include/crankshaft.h",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "format": "clangformatjs src/**/*{.c,.h} include/crankshaft.h"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "author": "Philipp Renoth <renoth@wildoak.de>",
+  "license": "MIT",
+  "devDependencies": {
+    "clangformatjs": "^1.0.0"
+  }
 }
