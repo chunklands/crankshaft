@@ -286,6 +286,7 @@ struct icra_engine_s
 
         // game objects
         GArray *game_blocks;
+        GLuint game_texture;
 };
 
 void icra_engine_openglthread_enqueue_dispatcher (

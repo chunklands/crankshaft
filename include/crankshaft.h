@@ -198,6 +198,9 @@ extern "C"
         CRA_EXTERN int cra_init (cra_error_handler error_handler, void *data);
         CRA_EXTERN int cra_destroy (void);
 
+        CRA_EXTERN int cra_engine_bake_texture (cra_engine_t engine,
+                                                cra_ulc_engine callback,
+                                                void *callback_data);
         CRA_EXTERN int
         cra_engine_block_new (cra_engine_t engine,
                               const struct cra_block_new_params *params,

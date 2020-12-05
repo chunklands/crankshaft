@@ -10,6 +10,7 @@ typedef struct dd_s
 static gboolean
 dispatch_block_new (dd_t dd)
 {
+        ICRA_PREAMBLE_DISPATCH ();
         g_array_append_val (dd->engine->game_blocks, dd->block);
         icra_ulc_mainthread_enqueue_closure (dd->engine, &dd->closure, cra_ok,
                                              dd->engine);
@@ -21,6 +22,7 @@ cra_engine_block_new (cra_engine_t engine,
                       const struct cra_block_new_params *params,
                       cra_ulc_engine callback, void *callback_data)
 {
+        ICRA_PREAMBLE_API ();
         cra_block_t block;
         ICRA_MALLOC (block);
 
